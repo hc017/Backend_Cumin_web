@@ -1,15 +1,18 @@
 const express = require('express');
+// const session = require('express-session'); // Add this line
 const cors = require('cors');
-const connectDB = require('./config/db'); // Import database connection
-const userRoutes = require('./routes/userRoutes'); // Import user routes
+const connectDB = require('./config/db');
+const userRoutes = require('./routes/userRoutes');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
-// Connect to MongoDB
+
 connectDB();
 
 // Routes
