@@ -26,5 +26,28 @@ const addDetails = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+// Get details controller// Get details controller
+const getDetails = async (req, res) => {
+  const { userEmail } = req.body; // Extract userEmail from request body
 
-module.exports = { addDetails };
+  try {
+    // Find the additional details document by userEmail
+    const details = await AdditionalDetails.findOne({ email: userEmail });
+
+    if (!details) {
+      // If details are not found, return a 404 status and message
+      return res.status(404).json({ detailsExist: false });
+    }
+
+    // If details are found, return them
+    res.status(200).json({ details });
+  } catch (error) {
+    // If an error occurs, return a 500 status and error message
+    console.error("Error fetching details:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
+module.exports = { addDetails, getDetails };

@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const { createUser, loginUser, getUser } = require('../controllers/userController');
-const { addDetails } = require("../controllers/addUserDetails");
+const { addDetails, getDetails } = require("../controllers/addUserDetails");
 
 const auth = require('../controllers/auth'); // Import the auth middleware
 const { addProject, getProjectsByUser, getTeammatesByProjectId } = require('../controllers/projectController');
@@ -13,6 +13,8 @@ const { addIssueToProject, deleteIssueById } = require('../controllers/issueCont
 router.get("/userprojects", auth, getProjectsByUser);
 router.get('/getuser', getUser);
 router.get("/projects/:projectId/teammates", getTeammatesByProjectId);
+router.get('/addiget', getDetails); // Apply the auth middleware to protect this route
+router.post('/addiget', getDetails); // Apply the auth middleware to protect this route
 router.post('/login', loginUser);
 router.post('/signup', createUser);
 router.post('/addproject', auth, addProject);
