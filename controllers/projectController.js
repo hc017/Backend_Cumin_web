@@ -14,14 +14,13 @@ const addProject = async (req, res) => {
     projectMeet,
     teamSize,
     teamMembers,
+    ownerEmail
   } = req.body;
 
-  // You can retrieve ownerEmail from user authentication data if it's attached to the request object
+
 
   try {
     // Example: const ownerEmail = req.user.email;
-    const ownerEmail = "example@example.com"; // Replace with authenticated user's email
-
     const project = new Project({
       projectName,
       role,
@@ -38,12 +37,11 @@ const addProject = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 // Function to get projects by user
 const getProjectsByUser = async (req, res) => {
   try {
-    // Get user's email from authenticated user
-    const userEmail = req.user.email;
+    // Get user's email from the request body
+    const { userEmail } = req.body;
 
     // Fetch projects created by the user
     const projects = await Project.find({ ownerEmail: userEmail });
@@ -54,6 +52,8 @@ const getProjectsByUser = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
 
 // Function to get teammates by project
 const getTeammatesByProjectId = async (req, res) => {

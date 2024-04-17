@@ -12,6 +12,7 @@ router.post('/signup', createUser);
 router.post('/login', loginUser);
 router.post('/addproject', auth, addProject);
 router.get("/userprojects", auth, getProjectsByUser);
+router.post("/userprojects", auth, getProjectsByUser);
 router.get("/projects/:projectId/teammates", getTeammatesByProjectId);
 router.get('/getuser', getUser);
 router.post('/addi', addDetails); // Apply the auth middleware to protect this route

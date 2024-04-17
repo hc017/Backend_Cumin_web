@@ -7,7 +7,7 @@ const additionalDetailsSchema = new mongoose.Schema({
   designation: { type: String, required: true },
   github: { type: String },
   mobile: { type: String, required: true },
-  whatsapp: { type: String },
+  whatsapp: { type: String }
 });
 
 // Create and export the AdditionalDetails model
