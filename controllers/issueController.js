@@ -1,41 +1,53 @@
-// controllers/issueController.js
-const Issue = require('../models/Issue');
+// issueController.js
 
-// Create a new issue
-const createIssue = async (req, res) => {
-    try {
-        const { title, description, projectId, userId } = req.body;
-        const issue = new Issue({ title, description, projectId, userId });
-        await issue.save();
-        res.status(201).json({ message: 'Issue created successfully', issue });
-    } catch (error) {
-        console.error('Error creating issue:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+const Issue = require("../models/Issue");
+
+// Function to add an issue to the selected project
+const addIssueToProject = async (req, res) => {
+  const {
+    title,
+    description,
+    projectId,
+    IuserEmail
+  } = req.body;
+
+  try {
+    // const userEmail = req.user.email; // Get current user's email from authentication
+    // Create the issue
+    const newIssue = new Issue({
+      title,
+      description,
+      projectId,
+      IuserEmail
+    });
+
+    // Save the issue
+    await newIssue.save();
+
+    res.status(201).json({ message: "Issue added successfully" });
+  } catch (error) {
+    console.error("Error adding issue:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
-// Get all issues for a specific project
-const getIssuesByProjectId = async (req, res) => {
+// Controller function to delete an issue by ID
+const deleteIssueById = async (req, res) => {
     try {
-        const projectId = req.params.projectId;
-        const issues = await Issue.find({ projectId });
-        res.status(200).json({ issues });
+      // Find the issue by ID and delete it
+      const deletedIssue = await Issue.findByIdAndDelete(req.params.id);
+  
+      // Check if the issue exists
+      if (!deletedIssue) {
+        return res.status(404).json({ message: "Issue not found" });
+      }
+  
+      // Return success message
+      res.status(200).json({ message: "Issue deleted successfully" });
     } catch (error) {
-        console.error('Error fetching issues:', error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error("Error deleting issue:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
-};
+  };
 
-// Get all issues for a specific user
-const getIssuesByUserId = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const issues = await Issue.find({ userId });
-        res.status(200).json({ issues });
-    } catch (error) {
-        console.error('Error fetching issues:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
-
-module.exports = { createIssue, getIssuesByProjectId, getIssuesByUserId };
+module.exports = { addIssueToProject, deleteIssueById };
